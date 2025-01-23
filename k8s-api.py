@@ -31,8 +31,6 @@ def get_node_resource():
     return nodeInstance
 
 """
-用什麼部署pod openfaas??
-
 先將pending的pod以及pod的資源的使用量(limit)取出來。
 pods = {
         "pod1": {"cpu": 1.0, "memory": 512},
