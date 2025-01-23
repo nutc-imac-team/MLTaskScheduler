@@ -83,8 +83,6 @@ pods = {
     }
 """
 def main():
-    # api_response = k8sCoreV1api.read_node('kaip-3', pretty=True)
-    # print(api_response)
     pod_dict = {}
     w = watch.Watch()
     for event in w.stream(k8sCoreV1api.list_namespaced_pod, "openfaas-fn"):
@@ -114,49 +112,6 @@ def main():
             }
         }
         """
-        # and event['object'].spec.scheduler_name == scheduler_name:
-        if event['object'].status.phase == "Pending":
-            try:
-                # print(event['object'].metadata.name)
-                object_now = json.loads(event['object'].metadata.annotations['com.openfaas.function.spec'])
-                print(object_now)
-                nodes = {
-                    "node1": {"cpu": 8.0, "memory": 16384},  # 節點1，8 CPU核心，16GB記憶體
-                    "node2": {"cpu": 8.0, "memory": 16384},  # 節點2，8 CPU核心，16GB記憶體
-                    "node3": {"cpu": 8.0, "memory": 16384},  # 節點3，8 CPU核心，16GB記憶體
-                }
-                pod_dict[event['object'].metadata.name] = object_now['limits']
-                best_solution, unassigned_pods = ga_placement(pods=pod_dict, nodes=nodes)
-                node_usage = {node: {"cpu": 0.0, "memory": 0, "pods": []} for node in nodes}  # 初始化節點使用情況
-
-                for pod, node_index in zip(pod_dict.keys(), best_solution):  # 將 Pod 分配到節點
-                    node_name = list(nodes.keys())[node_index]
-                    node_usage[node_name]["pods"].append(pod)
-                    node_usage[node_name]["cpu"] += pod_dict[pod]["cpu"]
-                    node_usage[node_name]["memory"] += pod_dict[pod]["memory"]
-
-                # 從節點使用情況中移除未分配的pod
-                for pod in unassigned_pods:
-                    for node in node_usage.values():
-                        if pod in node["pods"]:
-                            node["pods"].remove(pod)
-                            node["cpu"] -= pod_dict[pod]["cpu"]
-                            node["memory"] -= pod_dict[pod]["memory"]
-
-                for node, usage in node_usage.items():
-                    bind_pod_to_node(pod_name=usage["pods"], node_name=node)
-
-                # type(object_now['limits'])
-                # print(event['object'].metadata.limits)
-                # res = scheduler(event['object'].metadata.name,random.choice(nodes_available()))
-            except client.rest.ApiException as e:
-                print('1111111')
-                print(json.load(e.body)["message"])
-
-def test():
-    pod_dict = {}
-    w = watch.Watch()
-    for event in w.stream(k8sCoreV1api.list_namespaced_pod, "openfaas-fn"):
         # and event['object'].spec.scheduler_name == scheduler_name:
         if event['object'].status.phase == "Pending":
             try:
