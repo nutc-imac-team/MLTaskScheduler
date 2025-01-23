@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+annotations: com.openfaas.function.spec
+metadata:
+  name: annotation-default-scheduler-ML-task1
+  namespace: openfaas-fn
+  labels:
+    name: multischeduler-example
+spec:
+  schedulerName: default-scheduler
+  containers:
+  - name: pod-with-default-annotation-container
+    image: registry.k8s.io/pause:3.8
+
+apiVersion: v1
+kind: Pod
+annotations: com.openfaas.function.spec
+metadata:
+  name: annotation-default-scheduler-r-ML-task2
+  namespace: openfaas-fn
+  labels:
+    name: multischeduler-example
+spec:
+  schedulerName: default-scheduler
+  containers:
+  - name: pod-with-default-annotation-container
+    image: registry.k8s.io/pause:3.8
