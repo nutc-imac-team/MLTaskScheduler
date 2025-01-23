@@ -1,6 +1,4 @@
-# ML Pipeline Deployment and Scheduling
-
-This project demonstrates how to deploy and schedule Pods in a machine learning pipeline using Kubernetes and a GA algorithm.
+This project demonstrates how to schedule Pods in a machine learning pipeline using Kubernetes and a GA algorithm.
 
 ## Table of Contentss
 
@@ -90,7 +88,13 @@ To run the scheduler, follow these steps:
     source ./.venv/bin/activate
     ```
 
-3. Run the GA scheduler script:
+3. Install the required dependencies:
+
+    ```sh
+    pip install -r ./MLTaskScheduler/GA/requirements.txt
+    ```
+
+4. Run the GA scheduler script:
 
     ```sh
     python3 ./MLTaskScheduler/GA/ga_new.py
